@@ -1,0 +1,16 @@
+server:
+  port: ${STREETS_GRAPH_PORT:8082}
+
+spring:
+  application:
+    name: "ms-streets-graph"
+  profiles:
+    active: ${SPR_PROFILE:dev}
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER_URL:http://localhost:8888}
+      fail-fast: true
+      retry:
+        max-attempts: 20
+        max-interval: 15000
+        initial-interval: 10000

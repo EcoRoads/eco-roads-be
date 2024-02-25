@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: ru.nsu.ecoroads.configuration.db.CamelCaseToUnderscoresNamingStrategyImpl
+    properties:
+      hibernate:
+        query:
+          plan_cache_max_size: 256
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+  datasource:
+    url: ${DB_JDBC_URL:jdbc:postgresql://localhost:5432/eco-roads}
+    username: admin
+    password: password
+    hikari:
+      transaction-isolation: TRANSACTION_REPEATABLE_READ

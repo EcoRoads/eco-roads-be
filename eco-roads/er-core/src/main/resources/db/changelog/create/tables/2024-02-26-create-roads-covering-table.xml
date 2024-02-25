@@ -1,0 +1,35 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+
+    <changeSet id="2024-02-26-create-roads-covering-table"
+               author="yattroman">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roads_covering"/>
+            </not>
+        </preConditions>
+        <createTable tableName="roads_covering">
+            <column name="id"
+                    type="${uuid_type}">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             primaryKeyName="pk_roads_covering"/>
+            </column>
+            <column name="name"
+                    type="VARCHAR(255)"/>
+            <column name="roads_map"
+                    type="jsonb"/>
+            <column name="roads_graph"
+                    type="jsonb"/>
+            <column name="total_roads_number"
+                    type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>

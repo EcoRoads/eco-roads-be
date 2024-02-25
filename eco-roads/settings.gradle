@@ -1,0 +1,14 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/snapshot' }
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'ecoroads'
+
+include 'er-config'
+include 'er-core'
+include 'er-models'
+include 'er-streetsgraph'

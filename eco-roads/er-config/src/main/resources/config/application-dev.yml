@@ -1,0 +1,27 @@
+spring:
+  rabbitmq:
+    host: ${RABBIT_HOST:eco-roads-rabbitmq}
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      direct:
+        auto-startup: true
+
+eco-roads:
+  configuration:
+    rabbitmq:
+      streets-graph:
+        init-map:
+          queue: streets-graph.init-map.request-queue
+          exchange: streets-graph.init-map.request-exchange
+          routing: eco-roads.nsu.streets-graph.init-map
+      core:
+        init-map:
+          queue: core.init-map.request-queue
+          exchange: core.init-map.request-exchange
+          routing: eco-roads.nsu.core.init-map
+  api:
+    graphhopper:
+      routing-engine:
+        url: http://localhost:8989/route

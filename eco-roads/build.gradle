@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'java-library'
+}
+
+subprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
+
+    dependencies {
+        compileOnly 'org.projectlombok:lombok:1.18.24'
+        annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+        implementation 'org.apache.commons:commons-collections4:4.4'
+
+        testCompileOnly 'org.projectlombok:lombok:1.18.24'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
+
+allprojects {
+    group = 'ru.nsu.ecoroads'
+    version = '1.0'
+
+    java.sourceCompatibility(JavaVersion.VERSION_17)
+    java.targetCompatibility(JavaVersion.VERSION_17)
+}

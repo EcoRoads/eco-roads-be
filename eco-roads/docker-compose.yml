@@ -1,0 +1,68 @@
+version: "3.5"
+services:
+  eco-roads-rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - er-network
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+    volumes:
+      - '~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/mnesia/'
+
+  eco-roads-db:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    networks:
+      - er-network
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASS:-password}
+      POSTGRES_USER: 'admin'
+      POSTGRES_DB: 'eco-roads'
+
+  er-streetsgraph:
+    build:
+      context: ./er-streetsgraph
+      dockerfile: Dockerfile
+    ports:
+      - ${STREETS_GRAPH_PORT}:${STREETS_GRAPH_PORT}
+    networks:
+      - er-network
+    environment:
+      STREETSGRAPH_PORT: ${STREETS_GRAPH_PORT}
+      CONFIG_SERVER_URL: ${CONFIG_SERVER_URL}
+
+  er-config:
+    build:
+      context: ./er-config
+      dockerfile: Dockerfile
+    ports:
+      - ${CONFIG_PORT}:${CONFIG_PORT}
+    networks:
+      - er-network
+    environment:
+      CONFIG_PORT: ${CONFIG_PORT}
+      CONFIG_SERVER_URL: ${CONFIG_SERVER_URL}
+      RABBIT_HOST: ${RABBIT_HOST}
+
+  er-core:
+    build:
+      context: ./er-core
+      dockerfile: Dockerfile
+    ports:
+      - ${CORE_PORT}:${CORE_PORT}
+    networks:
+      - er-network
+    environment:
+      CORE_PORT: ${CORE_PORT}
+      CONFIG_SERVER_URL: ${CONFIG_SERVER_URL}
+      DB_JDBC_URL: ${DB_JDBC_URL}
+
+networks:
+  er-network:
+    driver: bridge
